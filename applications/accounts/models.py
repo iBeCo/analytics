@@ -7,7 +7,6 @@ import boto3
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
-from django.db.models.signals import post_save, post_delete
 from django.conf import settings
 from django.contrib.gis.geos import Point
 from django_extensions.db.fields import ModificationDateTimeField
@@ -89,10 +88,6 @@ def delete_aws_sns(sender, instance, **kwargs):
         sns = SNS()
         response = sns.delete_gcm_endpoint(arn=instance.aws_subscription_arn)
     return True
-
-
-# post_save.connect(add_device_object_to_elastic_index, sender=Device)
-# post_delete.connect(delete_aws_sns, sender=Device)
 
 
 class SNS(object):

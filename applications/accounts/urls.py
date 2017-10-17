@@ -23,7 +23,7 @@ urlpatterns = [
     # url(r'^update-password/$', account_view.PasswordUpateView.as_view(), name='user-password-update'),
 
     url(r'^devices/register/$', csrf_exempt(account_view.RegisterDevice.as_view()), name='register-mobile-device'),
-    url(r'^ad/stores/(?P<store_id>\d+)/iamhere/$', account_view.ArrivalDetectionView.as_view(), name='user-ad'),
+    # url(r'^ad/stores/(?P<store_id>\d+)/iamhere/$', account_view.ArrivalDetectionView.as_view(), name='user-ad'),
 
     url(r'^', include(router.urls)),
 

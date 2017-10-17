@@ -1,23 +1,17 @@
 # coding=utf-8
 
 from django.contrib.auth import authenticate, login, logout
-from django.views.generic import View
-from django.shortcuts import redirect
-from django.contrib.auth import get_user_model
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
-from rest_framework.generics import GenericAPIView
 
 
-from django.utils import timezone
 
 # from applications.arrivaldetection.models import ArrivalDetection
 # from applications.store.models import Store
+from applications.accounts.models import Device, SNS
 
 
-# from applications.accounts.mixins import UserSocialRegisterMixin
 from utils.helpers import ErrorType
 from utils.csrf import UnsafeSessionAuthentication
 from applications.accounts.serializer import UserLoginSerializer, UserEmailRegisterSerializer, \
@@ -148,10 +142,10 @@ class RegisterDevice(APIView, ErrorType):
             registrationID = self.request.data.get('push_token')
             if not deviceID or not registrationID:
                 return Response(status=self.MISSING_ATTRIBUTES)
-            device, created = GCMDevice.objects.get_or_create(device_id=deviceID)
+            device, created = Device.objects.get_or_create(device_id=deviceID)
             if request.user.is_authenticated():
                 device.user = request.user
-                devices = GCMDevice.objects.filter(user=request.user).exclude(device_id=deviceID)
+                devices = Device.objects.filter(user=request.user).exclude(device_id=deviceID)
                 if devices:
                     devices.delete()
             else:
@@ -197,47 +191,47 @@ class RegisterDevice(APIView, ErrorType):
         return True
 
 
-class ArrivalDetectionView(APIView, ErrorType):
-    """
-    Update user analytics data
-    """
-
-    authentication_classes = (UnsafeSessionAuthentication,)
-
-    def post(self, request, store_id, *args, **kwargs):
-        user_agent = request.META.get('HTTP_USER_AGENT', '')
-        device_id = request.META.get('HTTP_X_DEVICE_ID', '')
-
-        # user_agent = request.POST.get('HTTP_USER_AGENT', '')
-        # device_id = request.POST.get('HTTP_X_DEVICE_ID', '')
-        try:
-            store = Store.objects.get(id=store_id)
-        except Store.DoesNotExist:
-            return Response(status=self.NOT_FOUND)
-
-        if device_id:
-            try:
-                analytics, created = ArrivalDetection.objects.get_or_create(device_id=device_id, store=store)
-            except ArrivalDetection.MultipleObjectsReturned:
-                all_analytics = ArrivalDetection.objects.filter(device_id=device_id, store=store)
-                analytics = all_analytics[0]
-                created = False
-                duplicates = all_analytics[1:]
-                for item in duplicates:
-                    item.delete()
-
-            if not created:
-                analytics.date = timezone.now()
-            if request.user.is_authenticated():
-                analytics.user = request.user
-            user_agent_data = user_agent.split('/') if user_agent else []
-            if len(user_agent_data) == 3:
-                user_agent_data[1] = user_agent_data[1].replace('android', '')
-                analytics.version = user_agent_data[1]
-                analytics.device_info = user_agent_data[2]
-            else:
-                analytics.version = user_agent
-            analytics.save()
-            return Response(status=self.SUCCESS)
-        else:
-            return Response(status=self.MISSING_ATTRIBUTES)
+# class ArrivalDetectionView(APIView, ErrorType):
+#     """
+#     Update user analytics data
+#     """
+#
+#     authentication_classes = (UnsafeSessionAuthentication,)
+#
+#     def post(self, request, store_id, *args, **kwargs):
+#         user_agent = request.META.get('HTTP_USER_AGENT', '')
+#         device_id = request.META.get('HTTP_X_DEVICE_ID', '')
+#
+#         # user_agent = request.POST.get('HTTP_USER_AGENT', '')
+#         # device_id = request.POST.get('HTTP_X_DEVICE_ID', '')
+#         try:
+#             store = Store.objects.get(id=store_id)
+#         except Store.DoesNotExist:
+#             return Response(status=self.NOT_FOUND)
+#
+#         if device_id:
+#             try:
+#                 analytics, created = ArrivalDetection.objects.get_or_create(device_id=device_id, store=store)
+#             except ArrivalDetection.MultipleObjectsReturned:
+#                 all_analytics = ArrivalDetection.objects.filter(device_id=device_id, store=store)
+#                 analytics = all_analytics[0]
+#                 created = False
+#                 duplicates = all_analytics[1:]
+#                 for item in duplicates:
+#                     item.delete()
+#
+#             if not created:
+#                 analytics.date = timezone.now()
+#             if request.user.is_authenticated():
+#                 analytics.user = request.user
+#             user_agent_data = user_agent.split('/') if user_agent else []
+#             if len(user_agent_data) == 3:
+#                 user_agent_data[1] = user_agent_data[1].replace('android', '')
+#                 analytics.version = user_agent_data[1]
+#                 analytics.device_info = user_agent_data[2]
+#             else:
+#                 analytics.version = user_agent
+#             analytics.save()
+#             return Response(status=self.SUCCESS)
+#         else:
+#             return Response(status=self.MISSING_ATTRIBUTES)

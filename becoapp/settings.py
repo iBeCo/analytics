@@ -150,3 +150,10 @@ ELASTICSEARCH_DSL_INDEX_SETTINGS = {
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#AMAZON SNS
+AWS_SNS_PLATFORM_APP_ARN = os.environ.get('AWS_SNS_PLATFORM_APP_ARN', '')
+AWS_SNS_TOPIC_ARN = os.environ.get('AWS_SNS_TOPIC_ARN', '')
+AWS_DEFAULT_REGION = os.environ.get('AWS_DEFAULT_REGION', '')
+AWS_SNS_ACCESS_KEY_ID = os.environ.get('AWS_SNS_ACCESS_KEY_ID', '')
+AWS_SNS_SECRET_ACCESS_KEY = os.environ.get('AWS_SNS_SECRET_ACCESS_KEY', '')
