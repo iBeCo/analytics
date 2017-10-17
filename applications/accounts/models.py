@@ -14,6 +14,7 @@ from django_extensions.db.fields import ModificationDateTimeField
 
 
 # from utils.handlers import add_device_object_to_elastic_index
+from utils.constants import USER_ROLES, BECO_CUSTOMER
 
 
 class User(AbstractUser):
@@ -28,7 +29,7 @@ class User(AbstractUser):
     mobile = models.CharField(_('Mobile Number'),max_length=25, null=True, blank=True)
     gender = models.CharField(_('Gender'), choices=GENDER_CHOICES, max_length=25, null=True, blank=True)
     dob = models.DateField(verbose_name=_('DOB'), null=True, blank=True)
-    # role = models.CharField(_('Role'), choices=USER_ROLES, max_length=25, default=BECO_CUSTOMER)
+    role = models.CharField(_('Role'), choices=USER_ROLES, max_length=25, default=BECO_CUSTOMER)
     # referral_code = models.CharField(_('Referral Code'),  max_length=255, null=True, blank=True)
     # points = models.PositiveIntegerField(_('Points'), default=0)
     # points_last_activity_date = models.DateField(_('Points Last Activity Date'), null=True, blank=True)
