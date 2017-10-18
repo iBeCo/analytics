@@ -136,15 +136,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-ELASTICSEARCH_DSL = {
-    'default': {
-        'hosts': 'localhost:9200'
-    },
-}
-
-ELASTICSEARCH_DSL_INDEX_SETTINGS = {
-    'number_of_shards': 1
-}
 
 
 # Static files (CSS, JavaScript, Images)
@@ -152,9 +143,4 @@ ELASTICSEARCH_DSL_INDEX_SETTINGS = {
 
 STATIC_URL = '/static/'
 
-#AMAZON SNS
-AWS_SNS_PLATFORM_APP_ARN = os.environ.get('AWS_SNS_PLATFORM_APP_ARN', '')
-AWS_SNS_TOPIC_ARN = os.environ.get('AWS_SNS_TOPIC_ARN', '')
-AWS_DEFAULT_REGION = os.environ.get('AWS_DEFAULT_REGION', '')
-AWS_SNS_ACCESS_KEY_ID = os.environ.get('AWS_SNS_ACCESS_KEY_ID', '')
-AWS_SNS_SECRET_ACCESS_KEY = os.environ.get('AWS_SNS_SECRET_ACCESS_KEY', '')
+from elastic import *
