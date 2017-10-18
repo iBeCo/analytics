@@ -18,6 +18,18 @@ class DeviceDocument(DocType):
         'email': fields.StringField(),
     })
 
+    stores = fields.NestedField(properties={
+        'store_id': fields.StringField(),
+        'date': fields.DateField(),
+    })
+
+    offers = fields.NestedField(properties={
+        'reward': fields.StringField(),
+        'date_redeemed': fields.DateField(),
+        'expiry_date': fields.DateField(),
+        'date_claimed': fields.DateField(),
+    })
+
     class Meta:
         model = Device # The model associated with this DocType
 
@@ -42,5 +54,7 @@ class DeviceDocument(DocType):
         """If related_models is set, define how to retrieve the Car instances from the related model."""
         return related_instance.device_set.all()
 
+    def update_stores()
+        pass
     def prepare_date_modified(self, instance):
         return instance.date_modified
