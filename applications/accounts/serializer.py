@@ -1,15 +1,8 @@
 # coding=utf-8
 
-# from allauth.socialaccount.models import SocialAccount
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
-from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import force_text
-from django.utils.http import urlsafe_base64_decode
-from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth.hashers import check_password
 
 
 from rest_framework import serializers
