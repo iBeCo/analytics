@@ -57,7 +57,7 @@ class Device(models.Model):
         verbose_name=_("Creation date"), auto_now_add=True, null=True
     )
 
-    # date_modified = ModificationDateTimeField(_('Modified date'))
+    date_modified = ModificationDateTimeField(_('Modified date'))
 
     device_id = models.TextField(
         verbose_name=_("Device ID"), db_index=True,
