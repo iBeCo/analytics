@@ -148,7 +148,8 @@ class RegisterDevice(APIView, ErrorType):
                 if devices:
                     # Deleting other devices associated with this user
                     # This is incorrect. We need to update these devices with empty user
-                    devices.delete()
+                    devices.objects.all().update(user=None)
+                    # devices.delete()
             else:
                 device.user = None
 
