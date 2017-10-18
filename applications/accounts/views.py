@@ -9,7 +9,7 @@ from rest_framework.response import Response
 
 # from applications.arrivaldetection.models import ArrivalDetection
 # from applications.store.models import Store
-from applications.accounts.models import Device, SNS
+from applications.accounts.models import Device
 
 
 from utils.helpers import ErrorType

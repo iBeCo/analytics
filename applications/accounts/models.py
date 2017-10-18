@@ -1,8 +1,6 @@
 from __future__ import unicode_literals
 
 import json
-import boto3
-
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -81,40 +79,3 @@ class Device(models.Model):
         if self.device_location:
             return Point(self.device_location.longitude, self.device_location.latitude)
         return None
-
-
-def delete_aws_sns(sender, instance, **kwargs):
-    if instance.aws_subscription_arn:
-        sns = SNS()
-        response = sns.delete_gcm_endpoint(arn=instance.aws_subscription_arn)
-    return True
-
-
-class SNS(object):
-    def __init__(self):
-
-        self.client = boto3.client('sns', aws_access_key_id=settings.AWS_SNS_ACCESS_KEY_ID,
-                                   aws_secret_access_key=settings.AWS_SNS_SECRET_ACCESS_KEY, )
-
-        self.platform_arn = settings.AWS_SNS_PLATFORM_APP_ARN
-
-        self.resource = boto3.resource(service_name="sns",
-                                       aws_access_key_id=settings.AWS_SNS_ACCESS_KEY_ID,
-                                       aws_secret_access_key=settings.AWS_SNS_SECRET_ACCESS_KEY,
-                                       )
-
-    def create_gcm_endpoint(self, token):
-        response = self.client.create_platform_endpoint(
-            PlatformApplicationArn=self.platform_arn,
-            Token=token,
-            Attributes={
-                'Enabled': 'true'
-            }
-        )
-        return response
-
-    def delete_gcm_endpoint(self, arn):
-        response = self.client.delete_endpoint(
-                    EndpointArn=arn
-                )
-        return response
