@@ -1,5 +1,5 @@
 from django_elasticsearch_dsl import DocType, Index, fields
-from ..models import Device
+from ..models import Device, User
 
 # Name of the Elasticsearch index
 device = Index('device')
@@ -13,6 +13,10 @@ device.settings(
 class DeviceDocument(DocType):
 
     date_modified = fields.DateField()
+    user = fields.ObjectField(properties={
+        'mobile': fields.StringField(),
+        'email': fields.StringField(),
+    })
 
     class Meta:
         model = Device # The model associated with this DocType
@@ -24,6 +28,7 @@ class DeviceDocument(DocType):
             'active',
         ]
 
+        related_models = [User]
         # Ignore auto updating of Elasticsearch when a model is saved
         # or deleted:
         # ignore_signals = True
@@ -32,6 +37,10 @@ class DeviceDocument(DocType):
         # Paginate the django queryset used to populate the index with the specified size
         # (by default there is no pagination)
         # queryset_pagination = 5000
+
+    def get_instances_from_related(self, related_instance):
+        """If related_models is set, define how to retrieve the Car instances from the related model."""
+        return related_instance.device_set.all()
 
     def prepare_date_modified(self, instance):
         return instance.date_modified
