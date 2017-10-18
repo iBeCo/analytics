@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django_elasticsearch_dsl import DocType, Index, fields
 from ..models import Device, User
 
@@ -13,6 +15,7 @@ device.settings(
 class DeviceDocument(DocType):
 
     date_modified = fields.DateField()
+
     user = fields.ObjectField(properties={
         'mobile': fields.StringField(),
         'email': fields.StringField(),
@@ -23,12 +26,12 @@ class DeviceDocument(DocType):
         'date': fields.DateField(),
     })
 
-    offers = fields.NestedField(properties={
+    '''offers = fields.NestedField(properties={
         'reward': fields.StringField(),
         'date_redeemed': fields.DateField(),
         'expiry_date': fields.DateField(),
         'date_claimed': fields.DateField(),
-    })
+    })'''
 
     class Meta:
         model = Device # The model associated with this DocType
@@ -54,7 +57,18 @@ class DeviceDocument(DocType):
         """If related_models is set, define how to retrieve the Car instances from the related model."""
         return related_instance.device_set.all()
 
-    def update_stores()
-        pass
+    def update_stores(self,store_id):
+        # https://github.com/istresearch/kibana-object-format
+        self.stores.append({'store_id': store_id,'date': datetime.now()})
+        self.save()
+
+    def prepare_stores(self, instance):
+        #print instance.stores
+        device = self.get(id=instance.pk)
+        return device.stores if device.stores else []
+
+    def prepare_offers(self, instance):
+        return []
+
     def prepare_date_modified(self, instance):
         return instance.date_modified
