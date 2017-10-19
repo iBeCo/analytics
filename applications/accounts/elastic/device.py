@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django_elasticsearch_dsl import DocType, Index, fields
 from ..models import Device, User
+from elasticsearch import TransportError
 
 # Name of the Elasticsearch index
 device = Index('device')
@@ -64,8 +65,12 @@ class DeviceDocument(DocType):
 
     def prepare_stores(self, instance):
         #print instance.stores
-        device = self.get(id=instance.pk)
-        return device.stores if device.stores else []
+        try:
+            device = self.get(id=instance.pk)
+        except TransportError:
+            device = None
+        if device:
+             return device.stores if device.stores else []
 
     def prepare_offers(self, instance):
         return []
