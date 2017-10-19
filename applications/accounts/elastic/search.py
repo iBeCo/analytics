@@ -1,21 +1,18 @@
 # coding=utf-8
-from django.conf import settings
+from applications.account.elastic import Search
 
-from elasticsearch import Elasticsearch
-from elasticsearch_dsl import Search
+class Device(Search):
+    search_client = None
 
-class Search(object)
-    """
-    A base class for all the search operations
-    """
-    def __init__(self,using=None):
-        """
-        :param chart_of_account:
-        :return:
+    def __init__(self,index,using=None):
+        Search.__init__(self, using)
 
-        Initialise the Base Journal
-        """
-        if using is None:
-            self.__client = Elasticsearch()
+    def get_search_client(self):
+        if self.search_client is None:
+            return self.objects
         else:
-            self.__client = Elasticsearch()
+            return self.search_client
+
+    def get_store(self, store_id,id):
+        self.search_client = self.filter(self.get_search_client(),store_id="stores.store_id", id="_id")
+        return self.execute(self.search_client)

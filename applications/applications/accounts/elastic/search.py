@@ -1,9 +1,10 @@
+# coding=utf-8
 from django.conf import settings
 
 from elasticsearch import Elasticsearch
-from elasticsearch_dsl import Search as SearchClient
+from elasticsearch_dsl import Search as ElasticSearch
 
-class Search(object):
+class Search(object)
     """
     A base class for all the search operations
     """
@@ -19,15 +20,15 @@ class Search(object):
         else:
             self.__client = Elasticsearch()
 
-        self.objects = SearchClient(using=self.__client, index=index)
+        self.objects = Search(using=self.__client, index=index)
 
     def get_client(self):
         return self.__client
 
-    def filter(self,search_client,**kwargs):
-        for key, value in kwargs.iteritems():
-            search_client.query("match",value=key)
-        return search_client
+class Device(Search):
 
-    def execute(self,search_client):
-        return search_client.execute()
+    def __init__(self,using=None):
+        Search.__init__(self, using)
+
+    def has_store(self, store_id)
+        s = Search(using=client, index="my-index")
