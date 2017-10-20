@@ -68,10 +68,9 @@ class DeviceDocument(DocType):
         #print instance.stores
         try:
             device = self.get(id=instance.pk)
+            return device.stores if device.stores else []
         except TransportError:
-            device = None
-        if device:
-             return device.stores if device.stores else []
+            return []
 
     def prepare_offers(self, instance):
         return []
