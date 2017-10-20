@@ -24,10 +24,5 @@ class Search(object):
     def get_client(self):
         return self.__client
 
-    def filter(self,search_client,**kwargs):
-        for key, value in kwargs.iteritems():
-            search_client.query("match",value=key)
-        return search_client
-
     def execute(self,search_client):
         return search_client.execute()
