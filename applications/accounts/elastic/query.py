@@ -1,6 +1,6 @@
 
 
-def store_search(store_id,id):
+def store_search(store_id,device_id):
     query = {
               "query": {
                 "bool": {
@@ -12,7 +12,7 @@ def store_search(store_id,id):
                     },
                     {
                       "match": {
-                        "_id": id
+                        "device_id": device_id
                       }
                     }
                   ]

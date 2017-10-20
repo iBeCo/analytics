@@ -11,13 +11,16 @@ class Device(Search):
         self.index = INDEX
         Search.__init__(self,using)
 
-    def get_store(self, store_id,id):
+    def __get_store(self, store_id,device_id):
 
         response = self.get_client().search(
                         index=self.index,
-                        body=store_search(store_id,id))
+                        body=store_search(store_id,device_id))
 
         if response['hits']['total'] == 0:
             raise StoreDoesNotExist()
         else:
             return response['hits']['hits']
+
+    def update_store(self,store_id,device_d):
+        pass
