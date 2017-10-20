@@ -5,7 +5,8 @@ from ..models import Device, User
 from elasticsearch import TransportError
 
 # Name of the Elasticsearch index
-device = Index('device')
+INDEX = 'device'
+device = Index(INDEX)
 # See Elasticsearch Indices API reference for available settings
 device.settings(
     number_of_shards=1,

@@ -2,24 +2,22 @@
 from applications.accounts.elastic import Search
 from elasticsearch_dsl import Q
 from exceptions import StoreDoesNotExist
+from query import store_search
+from device import INDEX
 
 class Device(Search):
-    search_client = None
 
-    def __init__(self,index,using=None):
-        Search.__init__(self, using)
-
-    def get_search_client(self):
-        if self.search_client is None:
-            return self.objects
-        else:
-            return self.search_client
+    def __init__(self,using=None):
+        self.index = INDEX
+        Search.__init__(self,using)
 
     def get_store(self, store_id,id):
-        self.search_client = self.get_search_client()
-        self.search_client.query = Q('bool', must=[Q('match', stores__store_id=store_id), Q('match', _id=id)])
-        self.response = self.execute(self.search_client)
-        if not self.response:
+
+        response = self.get_client().search(
+                        index=self.index,
+                        body=store_search(store_id,id))
+
+        if response['hits']['total'] == 0:
             raise StoreDoesNotExist()
         else:
-            return self.response[0]
+            return response['hits']['hits']
