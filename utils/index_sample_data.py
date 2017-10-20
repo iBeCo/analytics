@@ -6,7 +6,6 @@ from applications.accounts.models import Device
 from applications.accounts.elastic.device import DeviceDocument
 
 
-
 # create and save devices using django models
 def index_devices():
     User = get_user_model()
@@ -18,11 +17,10 @@ def index_devices():
         device.save()
 
 
-
 # create and save and device using DocType
 def add_devices_to_index():
     # create and save a device
-    device = DeviceDocument(meta={'id': 40}, decvice_id='kingsmen')
+    device = DeviceDocument(meta={'id': 40}, device_id='kingsmen')
     now = datetime.now()
 
     device.user = {
