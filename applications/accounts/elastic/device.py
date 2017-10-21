@@ -3,6 +3,7 @@ from datetime import datetime
 from django_elasticsearch_dsl import DocType, Index, fields
 from ..models import Device, User
 from elasticsearch import TransportError
+from elasticsearch_dsl import GeoPoint
 
 # Name of the Elasticsearch index
 INDEX = 'device'
@@ -22,6 +23,9 @@ class DeviceDocument(DocType):
         'mobile': fields.StringField(),
         'email': fields.StringField(),
     })
+
+    location = fields.GeoPointField(lat_lon=True)
+
 
     stores = fields.NestedField(properties={
         'store_id': fields.StringField(),
@@ -74,6 +78,9 @@ class DeviceDocument(DocType):
 
     def prepare_offers(self, instance):
         return []
+
+    def prepare_location(self,instance):
+        return dict(lat=10.0089331, lon=76.3155752)
 
     def prepare_date_modified(self, instance):
         return instance.date_modified
