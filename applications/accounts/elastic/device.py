@@ -24,8 +24,9 @@ class DeviceDocument(DocType):
         'email': fields.StringField(),
     })
 
-    location = fields.GeoPointField(lat_lon=True)
+    location = fields.GeoPointField()
 
+    tag_suggest = fields.CompletionField()
 
     stores = fields.NestedField(properties={
         'store_id': fields.StringField(),
@@ -78,6 +79,9 @@ class DeviceDocument(DocType):
 
     def prepare_offers(self, instance):
         return []
+
+    def prepare_tag_suggest(self, instance):
+        return ["red", "tiny",]
 
     def prepare_location(self,instance):
         return dict(lat=10.0089331, lon=76.3155752)
