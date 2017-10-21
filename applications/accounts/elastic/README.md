@@ -14,3 +14,26 @@ POST device/_search
     }
 }
 ````
+
+Use this API for location specific search
+````
+GET device/_search
+{
+    "query": {
+        "bool" : {
+            "must" : {
+                "match_all" : {}
+            },
+            "filter" : {
+                "geo_distance" : {
+                    "distance" : "200km",
+                    "location" : {
+                        "lat" : 40,
+                        "lon" : -70
+                    }
+                }
+            }
+        }
+    }
+}
+````
