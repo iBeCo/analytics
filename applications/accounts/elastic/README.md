@@ -37,3 +37,4 @@ GET device/_search
     }
 }
 ````
+https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-geo-distance-range-query.html
