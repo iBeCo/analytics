@@ -25,6 +25,8 @@ class User(AbstractUser):
     gender = models.CharField(_('Gender'), choices=GENDER_CHOICES, max_length=25, null=True, blank=True)
     dob = models.DateField(verbose_name=_('DOB'), null=True, blank=True)
     role = models.CharField(_('Role'), choices=USER_ROLES, max_length=25, default=BECO_CUSTOMER)
+    api_key = models.CharField(_('API KEY'), max_length=25, blank=True, null=True)
+    secret_key = models.CharField(_('Secret String'), max_length=25, blank=True, null=True)
 
     class Meta:
         verbose_name_plural = _('Users')

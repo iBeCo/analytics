@@ -9,6 +9,7 @@ from rest_framework.response import Response
 
 from utils.helpers import ErrorType
 from utils.csrf import UnsafeSessionAuthentication
+from applications.accounts.auth import MyAPISignatureAuthentication
 from applications.accounts.serializer import UserLoginSerializer, UserEmailRegisterSerializer, \
     UserProfileSerializer
 from applications.accounts.models import Device, ArrivalDetection
@@ -198,9 +199,11 @@ class ArrivalDetectionView(APIView, ErrorType):
     Update user analytics data
     """
 
-    authentication_classes = (UnsafeSessionAuthentication,)
+    # authentication_classes = (UnsafeSessionAuthentication,)
+    authentication_classes = (MyAPISignatureAuthentication,)
 
     def post(self, request, store_id, *args, **kwargs):
+        import ipdb; ipdb.set_trace();
         user_agent = request.META.get('HTTP_USER_AGENT', '')
         device_id = request.META.get('HTTP_X_DEVICE_ID', '')
 

@@ -2,3 +2,4 @@ Django==1.10
 djangorestframework==3.7.1
 django-elasticsearch-dsl==0.4.1
 django-extensions==1.9.6
+djangorestframework-httpsignature==1.0.0
