@@ -14,8 +14,7 @@ class MyAPISignatureAuthentication(SignatureAuthentication):
         # ...
         # example implementation:
         try:
-            import ipdb; ipdb.set_trace();
             user = User.objects.get(api_key=api_key)
-            return (user, user.secret)
+            return (user, user.secret_key)
         except User.DoesNotExist:
             return None
