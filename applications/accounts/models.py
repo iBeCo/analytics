@@ -7,9 +7,11 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django_extensions.db.fields import ModificationDateTimeField
+from django.db.models.signals import post_save
 
 
 from utils.constants import USER_ROLES, BECO_CUSTOMER
+from applications.accounts.signals import add_signature_signal
 
 
 class User(AbstractUser):
@@ -27,12 +29,16 @@ class User(AbstractUser):
     role = models.CharField(_('Role'), choices=USER_ROLES, max_length=25, default=BECO_CUSTOMER)
     api_key = models.CharField(_('API KEY'), max_length=25, blank=True, null=True)
     secret_key = models.CharField(_('Secret String'), max_length=25, blank=True, null=True)
+    signature = models.CharField(_('Signature'), max_length=50, blank=True, null=True)
 
     class Meta:
         verbose_name_plural = _('Users')
 
     def __unicode__(self):
         return self.get_username()
+
+
+post_save.connect(add_signature_signal, sender=User)
 
 
 class Device(models.Model):

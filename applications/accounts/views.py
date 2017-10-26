@@ -203,7 +203,6 @@ class ArrivalDetectionView(APIView, ErrorType):
     authentication_classes = (MyAPISignatureAuthentication,)
 
     def post(self, request, store_id, *args, **kwargs):
-        import ipdb; ipdb.set_trace();
         user_agent = request.META.get('HTTP_USER_AGENT', '')
         device_id = request.META.get('HTTP_X_DEVICE_ID', '')
 

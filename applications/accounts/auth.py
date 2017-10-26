@@ -11,7 +11,6 @@ class MyAPISignatureAuthentication(SignatureAuthentication):
     # A method to fetch (User instance, user_secret_string) from the
     # consumer key ID, or None in case it is not found.
     def fetch_user_data(self, api_key):
-        # ...
         # example implementation:
         try:
             user = User.objects.get(api_key=api_key)
